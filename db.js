@@ -1,20 +1,14 @@
-const mongodb = require('mongodb');
-const MongoClient = mongodb.MongoClient;
-const ObjectId=mongodb.ObjectId;
+const mongoose = require('mongoose')
 
 let database;
 
-async function getDatabase() {
-    const client = await MongoClient.connect('mongodb://localhost:27017/'),
-        database = client.db('library');
-        if (!database) {
-            console.log('database not connected')
-        }
-        return database;
+async function getDatabase() {    
+    mongoose.connect('mongodb://localhost:27017/library')
+    .then(()=>console.log('connected to database'))
+    .catch(()=> console.log('Not connected to database'))
 }
 
 
 module.exports = {
     getDatabase,
-    ObjectId
 }
