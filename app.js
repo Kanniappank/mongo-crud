@@ -5,8 +5,11 @@ const exhb = require('express-handlebars');
 const dbo = require('./db');
 const BookModel = require('./models/bookModel');
 const bookModel = require('./models/bookModel');
+const orderModel = require('./models/ordersModel')
+require('./models/productModel')
 
 dbo.getDatabase();
+
 app.engine('hbs', exhb.engine(
     {
         layoutsDir: 'views/', defaultLayout: 'main', extname: "hbs",
@@ -54,10 +57,16 @@ app.post('/store_book', async (req, res) => {
     return res.redirect('/?status=1');
 })
 
-app.post('/update_book/:edit_id', async (req, res) => { 
+app.post('/update_book/:edit_id', async (req, res) => {
     let edit_id = req.params.edit_id
     await bookModel.findOneAndUpdate({ _id: edit_id }, { book: req.body.title, aurthor: req.body.author })
     return res.redirect('/?status=2');
+})
+
+app.get('/many-to-many', async (req, res) => {
+    const orders = await orderModel.find()
+    console.log('orders', orders);
+
 })
 
 
